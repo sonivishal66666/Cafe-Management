@@ -1,0 +1,23 @@
+{
+    "name": "guestaccess/canteen_management",
+    "autoload": {
+        "psr-4": {
+            "Guestaccess\\CanteenManagement\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Vishal Soni",
+            "email": "86512053+sonivishal66666@users.noreply.github.com"
+        }
+    ],
+    "require": {
+        "cashfree/cashfree-pg-sdk-php": "^4.3",
+        "cashfree/cashfree-pg": "^4.3"
+    },
+    "config": {
+        "allow-plugins": {
+            "php-http/discovery": true
+        }
+    }
+}

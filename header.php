@@ -11,7 +11,7 @@ session_start();
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-  <title>Canteen Management</title>
+  <title>Mayuri</title>
 
   <!-- Web-Fonts -->
   <link href="//fonts.googleapis.com/css?family=Spartan:400,500,600,700,900&display=swap" rel="stylesheet">
@@ -31,7 +31,7 @@ session_start();
     <div class="container">
       <nav class="navbar navbar-expand-lg navbar-dark stroke">
         <a class="navbar-brand" href="index.php">
-          <span class="fa fa-cutlery"></span> Canteen Management
+          <span class="fa fa-cutlery"></span> Mayuri
         </a>
         <!-- if logo is image enable this   
       <a class="navbar-brand" href="#index.html">

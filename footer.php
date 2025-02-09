@@ -25,7 +25,7 @@
   				</div>
   				<div class="d-grid grid-col-3 grids-content1 bottom-border">
   					<div class="columns copyright-grid">
-  						<p class="copy-footer-29">© 2020 Canteen Management Project. All rights reserved | Designed by Keycoder<a 					
+  						<p class="copy-footer-29">© 2025 Mayuri. All rights reserved<a 					
   					</div>
   					<div class="columns text-right social-grid">
   						<ul class="social">
