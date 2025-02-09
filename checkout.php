@@ -110,7 +110,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit'])) {
                             $secret_key = "cfsk_ma_test_0a60a66d37c1ab96dcd3d4056cf57e04_f7f25b7b";
                             $order_amount = $item_total;
                             $customer_name = "vishal";
-                            $customer_email = "vishal@cashfree.com";
+                            $customer_email = "soni@cashfree.com";
                             $customer_phone = "9999999999";
                             $return_url = "http://localhost:3000/Canteen_Management/your_orders.php";
                 
