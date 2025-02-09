@@ -106,8 +106,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit'])) {
                         if (mysqli_query($db, $SQL)) {
                             // Redirect to Cashfree with correct order_id
                             $cashfree_url = "https://test.cashfree.com/billpay/checkout/post/submit";
-                            $app_id = "";
-                            $secret_key = "";
+                            $app_id = "TEST10323353dd615588a92764db9a9335332301";
+                            $secret_key = "cfsk_ma_test_0a60a66d37c1ab96dcd3d4056cf57e04_f7f25b7b";
                             $order_amount = $item_total;
                             $customer_name = "vishal";
                             $customer_email = "vishal@cashfree.com";
