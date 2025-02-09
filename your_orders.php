@@ -232,117 +232,100 @@ only screen and (max-width: 760px),
                             <div class="bg-gray restaurant-entry">
                                 <div class="row">
 								
-							<table >
-							<thead>
-								<tr>	
-									<th>Item</th>
-									<th>Quantity</th>
-									<th>price</th>
-									<th>status</th>
-									<th>Date</th>
-									<th>Pick Time</th>
-									<th>Action</th>
-									<!-- <th>Receipt</th> -->
-								</tr>
-							</thead>
-						 	 <tbody>
-									<?php 
-						                $query_res= mysqli_query($db,"select * from users_orders where u_id='".$_SESSION['user_id']."' order by o_id desc");
-										if(!mysqli_num_rows($query_res) > 0 )
-										{
-													echo '<td colspan="7"><center>You have No orders Placed yet. </center></td>';
-										}
-										else
-										{			      		  
-										  while($row=mysqli_fetch_array($query_res))
-										  {
-									?>
-												<tr>	
-															<td data-column="Item"> <?php echo $row['title']; ?></td>
-															<td data-column="Quantity"> <?php echo $row['quantity']; ?></td>
-															<td data-column="price">₹<?php echo $row['price']; ?></td>
-															<td data-column="status"> 
-														                <?php 
-																			$status=$row['status'];
-																		   
-                                                                            if($status=="" or $status=="NULL")
-																			{
-																			?>
-																			<button type="button" class="btn btn-primary" style="background-color: purple !important;border-color:purple;"><span class="fa fa-spinner fa-pulse"  aria-hidden="true" ></span> <span></span>Pending</button>
-                                                                            <?php 
-                                                                             } 												  
-																			 if($status=="in process")
-																			 { ?>
-																			 <button type="button" class="btn btn-warning"><span class="fa fa-cog fa-spin"  aria-hidden="true" ></span> <span></span>Preparing!</button>
-																			<?php
-																			}
-																			if($status=="closed")
-																			{
-																			?>
-                                                                             <button type="button" class="btn btn-success"> <i class="fa fa-check-circle"></i> <span></span>Delivered</button>
-                                                                            <?php 
-																			} 
-																			?>
-																			<?php
-																			if($status=="rejected")
-																			{
-																			?>
-																			 <button type="button" class="btn btn-danger"> <i class="fa fa-times-circle"></i> <span></span>Cancelled</button>
-																			<?php 
-																			} 
-																			?>
-                                                                            <?php
-																			if($status=="confirm")
-																			{
-																			?>
-																			  <button type="button" class="btn btn-info"> <i class="fa fa-check"></i> <span></span>Accepted</button>
-																			<?php 
-																			} 
-																			if($status=="prepared")
-																			{
-																			?>
-																			<button type="button" class="btn btn-success" style="background-color: green !important;border-color:green;"> <i class="fa fa-shopping-bag"></i> <span></span>Ready to Pick</button>
-																			<?php 
-																			}  
-																			?>										   													   
-														   </td>
-														  <td data-column="Date"> <?php echo $row['date']; ?></td>
-                                                          <td data-column="PickTime"> <?php echo $row['pick_time']; ?></td>
-														  <td>
-															<?php
-																if($status=="" or $status=="NULL")
-																{
-															?> 
-															
-															<!-- <button type="submit" class="btn btn-outline-danger"  name="submit"><span class="fa fa-close"  aria-hidden="true" ></span> <span></span>Cancel Order ?</button>	onclick="return confirm('Are you sure to Cancel Order?');" --> 
-															<a href="your_orders.php?o_id=<?php echo $row['o_id']; ?>"  class="btn btn-outline-danger" onclick="return confirm('Are you sure to want Cancell Ordered?');"><i class="fa fa-close"></i>Cancel Order ?</a>
-															<?php 
-																}elseif($status=="rejected")
-																{
-															?>
-															<button type="button" class="btn btn-outline-danger" style=""><span class=""  aria-hidden="true" ></span> <span></span>Cancelled</button>
-															<?php
-																}
-																else
-																{
-															?>
-																<button type="button" class="btn btn-outline-info" style=""><span class=""  aria-hidden="true" ></span> <span></span>Ordered</button>
-															<?php		
-																} 	
-															?>
-														  </td>
-														   </td>
-														   <!-- <td data-column="Receipt"><a href="test.php?p_time=<?= $row['pick_time']?>"  class="btn btn-outline-info">Download</a></td> -->
-												</tr>
-												
-											
-														<?php }} ?>					
-							
-							
-										
-						
-						 	 </tbody>
-							</table>
+								<table>
+    <thead>
+        <tr>    
+            <th>Item</th>
+            <th>Quantity</th>
+            <th>Price</th>
+            <th>Status</th>
+            <th>Payment Status</th> <!-- New Column Added -->
+            <th>Date</th>
+            <th>Pick Time</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        <?php 
+            $query_res = mysqli_query($db, "
+                SELECT uo.*, p.payment_status 
+                FROM users_orders uo
+                LEFT JOIN payments p ON uo.o_id = p.order_id
+                WHERE uo.u_id = '".$_SESSION['user_id']."' 
+                ORDER BY uo.o_id DESC
+            ");
+
+            if (!mysqli_num_rows($query_res) > 0) {
+                echo '<td colspan="8"><center>You have no orders placed yet.</center></td>';
+            } else {                  
+                while ($row = mysqli_fetch_array($query_res)) {
+        ?>
+        <tr>    
+            <td data-column="Item"><?php echo $row['title']; ?></td>
+            <td data-column="Quantity"><?php echo $row['quantity']; ?></td>
+            <td data-column="Price">₹<?php echo $row['price']; ?></td>
+            <td data-column="Status">
+                <?php 
+                    $status = $row['status'];
+                    if ($status == "" || $status == "NULL") {
+                        echo '<button type="button" class="btn btn-primary" style="background-color: purple !important;border-color:purple;">
+                            <span class="fa fa-spinner fa-pulse" aria-hidden="true"></span> Pending
+                        </button>';
+                    } elseif ($status == "in process") {
+                        echo '<button type="button" class="btn btn-warning">
+                            <span class="fa fa-cog fa-spin" aria-hidden="true"></span> Preparing!
+                        </button>';
+                    } elseif ($status == "closed") {
+                        echo '<button type="button" class="btn btn-success">
+                            <i class="fa fa-check-circle"></i> Delivered
+                        </button>';
+                    } elseif ($status == "rejected") {
+                        echo '<button type="button" class="btn btn-danger">
+                            <i class="fa fa-times-circle"></i> Cancelled
+                        </button>';
+                    } elseif ($status == "confirm") {
+                        echo '<button type="button" class="btn btn-info">
+                            <i class="fa fa-check"></i> Accepted
+                        </button>';
+                    } elseif ($status == "prepared") {
+                        echo '<button type="button" class="btn btn-success" style="background-color: green !important;border-color:green;">
+                            <i class="fa fa-shopping-bag"></i> Ready to Pick
+                        </button>';
+                    }
+                ?>
+            </td>
+            
+            <!-- Payment Status Column -->
+            <td data-column="Payment Status">
+                <?php 
+                    if ($row['payment_status']) {
+                        echo $row['payment_status']; 
+                    } else {
+                        echo "Pending"; // Default if no payment found
+                    }
+                ?>
+            </td>
+
+            <td data-column="Date"><?php echo $row['date']; ?></td>
+            <td data-column="PickTime"><?php echo $row['pick_time']; ?></td>
+            <td>
+                <?php
+                    if ($status == "" || $status == "NULL") { 
+                        echo '<a href="your_orders.php?o_id='.$row['o_id'].'" class="btn btn-outline-danger" onclick="return confirm(\'Are you sure you want to cancel the order?\');">
+                            <i class="fa fa-close"></i> Cancel Order?
+                        </a>';
+                    } elseif ($status == "rejected") {
+                        echo '<button type="button" class="btn btn-outline-danger">Cancelled</button>';
+                    } else {
+                        echo '<button type="button" class="btn btn-outline-info">Ordered</button>';
+                    }   
+                ?>
+            </td>
+        </tr>
+        <?php }} ?>    
+    </tbody>
+</table>
+
 						
 					
                                     
