@@ -92,27 +92,7 @@ header('location:index.php');
                         <li class="nav-item m-l-10"> <a class="nav-link sidebartoggler hidden-sm-down text-muted  " href="javascript:void(0)"><i class="ti-menu"></i></a> </li>
                         <!-- Messages -->
                         <li class="nav-item dropdown mega-dropdown"> <a class="nav-link dropdown-toggle text-muted  " href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fa fa-th-large"></i></a>
-                            <!-- <div class="dropdown-menu animated zoomIn">
-                                <ul class="mega-dropdown-menu row"> -->
-
-
-                                    <!-- <li class="col-lg-3  m-b-30">
-                                        <h4 class="m-b-20">CONTACT US</h4>
-                                        
-                                        <form>
-                                            <div class="form-group">
-                                                <input type="text" class="form-control" id="exampleInputname1" placeholder="Enter Name"> </div>
-                                            <div class="form-group">
-                                                <input type="email" class="form-control" placeholder="Enter email"> </div>
-                                            <div class="form-group">
-                                                <textarea class="form-control" id="exampleTextarea" rows="3" placeholder="Message"></textarea>
-                                            </div>
-                                            <button type="submit" class="btn btn-info">Submit</button>
-                                        </form>
-                                    </li> -->
-<!--                                     
-                                </ul>
-                            </div> -->
+             
                         </li>
                         <!-- End Messages -->
                     </ul>
@@ -124,13 +104,6 @@ header('location:index.php');
                             <form class="app-search">
                                 <input type="text" class="form-control" placeholder="Search here"> <a class="srh-btn"><i class="ti-close"></i></a> </form>
                         </li>
-                        <!-- Comment -->
-
-                       
-                
-                        
-                <!-- <i class="fa fa-envelope"></i><span class="badge">9</span>  -->
-               	
                 <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle text-muted text-muted" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <i class="fa fa-bell"></i>
                                <?php 
@@ -174,10 +147,6 @@ header('location:index.php');
                                             
                                         </div>
                                     </li>
-<!-- 
-                                    <li>
-                                        <a class="nav-link text-center" href="javascript:void(0);"> <strong>Check all notifications</strong> <i class="fa fa-angle-right"></i> </a>
-                                    </li> -->
                                     <?php 
                                       }
                                     ?>
@@ -229,17 +198,12 @@ header('location:index.php');
                                            
                                         </div>
                                     </li>
-                                    <!-- <li>
-                                        <a class="nav-link text-center" href="javascript:void(0);"> <strong>See all e-Mails</strong> <i class="fa fa-angle-right"></i> </a>
-                                    </li> -->
                                     <?php
                                       }
                                     ?>
                                 </ul>
                             </div>
                         </li>
-                        <!-- End Messages -->
-                        <!-- Profile -->
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle text-muted  " href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><img src="images/users/5.jpg" alt="user" class="profile-pic" /></a>
                             <div class="dropdown-menu dropdown-menu-right animated zoomIn">
@@ -263,10 +227,7 @@ header('location:index.php');
                         <li class="nav-devider"></li>
                         <li class="nav-label">Home</li>
                         <li> <a class="" href="dashboard.php" aria-expanded="false"><i class="fa fa-tachometer"></i><span class="hide-menu">Dashboard</span></a>
-                            <!-- <ul aria-expanded="false" class="collapse">
-                                <li><a href="dashboard.php">Dashboard</a></li>
-                                
-                            </ul> -->
+                          
                         </li>
                         <li class="nav-label">Log</li>
                         <li> <a class="" href="status.php" aria-expanded="false"> <span><i class="fa fa-hourglass-2"></i></span><span class="hide-menu">Status</span> <?= $rowcount >0 ? '<span class="badge"> '.$rowcount.'</span>':'' ?>   </a>
@@ -282,11 +243,7 @@ header('location:index.php');
                         <li> <a class="" href="staff.php" aria-expanded="false"> <span><i class="fa fa-user f-s-20"></i></span><span class="hide-menu">Staff</span> </a>
 
                         <li> <a class=" " href="add_category.php" aria-expanded="false"><i class="fa fa-apple f-s-20"></i><span class="hide-menu">Food Category</span></a>
-                            <!-- <ul aria-expanded="false" class="collapse">
-								<li><a href="allrestraunt.php">All Stores</a></li>
-								<li><a href="add_category.php">Add Category</a></li>                             
-                                
-                            </ul> -->
+                          
                         </li>
                       <li> <a class="has-arrow  " href="#" aria-expanded="false"><i class="fa fa-cutlery" aria-hidden="true"></i><span class="hide-menu">Menu</span></a>
                             <ul aria-expanded="false" class="collapse">
@@ -308,42 +265,5 @@ header('location:index.php');
                 </nav>
                 <!-- End Sidebar navigation -->
             </div>
-            <!-- End Sidebar scroll-->
         </div>
-        <!-- End Left Sidebar  -->
-        <!-- Page wrapper  -->
         <div class="page-wrapper" style="height:auto;">
-
-            <!-- Bread crumb -->
-           
-            <!-- End Bread crumb -->
-            <!-- Container fluid  -->
-
-<!-- <script>
-    $(document).ready(function(){
-        $("#m1").click(function(){
-           
-        });
-    });
-</script> -->
-
-<!-- <script type="text/javascript">
-$(document).ready(function() {
-$("#m1").click(function() {
-    $.ajax({
-        // var x = $("#visit").serializeArray();
-        url: 'header.php',
-        type: 'post',
-        dataType: 'json',  
-        success: function(data) {
-            alert("succe");
-            var visit = data[4];       
-        },
-        error: function(data) {
-            alert("ERRRR");
-        }
-
-    })
-});
-});
-</script> -->

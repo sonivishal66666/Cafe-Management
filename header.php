@@ -18,6 +18,7 @@ session_start();
   <!-- //Web-Fonts -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
   <!-- Template CSS -->
+   
 
 </head>
 
@@ -31,7 +32,7 @@ session_start();
     <div class="container">
       <nav class="navbar navbar-expand-lg navbar-dark stroke">
         <a class="navbar-brand" href="index.php">
-          <span class="fa fa-cutlery"></span> Mayuri
+        <span class="fa fa-utensils"></span> Mayuri
         </a>
         <!-- if logo is image enable this   
       <a class="navbar-brand" href="#index.html">
@@ -119,7 +120,8 @@ session_start();
 
       <div class="modal-body">
         <div class="modal__content">
-          <h2 class="logo"> <span class="fa fa-cutlery"></span> Canteen Management
+          <h2 class="logo"> <span class="fa fa-utensils"></span> Mayuri
+          Canteen Management
           <!-- if logo is image enable this   
           <h2 class="logo">
             <img src="image-path" alt="Your logo" title="Your logo" style="height:35px;" />
@@ -130,7 +132,7 @@ session_start();
             <h5 class="widget-title">Contact Us</h5>
             <ul class="icon-rounded address">
               <li>
-                <p> Old NH8, Bholav Bharuch,, Avdhoot Nagar, Bholav, Bharuch, Gujarat 392001</p>
+                <p> VIT University , Bhopal</p>
               </li>
               <li class="mt-3">
                 <p><span class="fa fa-phone"></span> <a href="tel:02642 246 402">02642 246 402</a></p>
