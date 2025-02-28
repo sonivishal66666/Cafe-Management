@@ -1,169 +1,523 @@
-<link rel="stylesheet" href="assets/css/style-starter.css">
-<style>
-h3,p{
-    text-align: center;
-}
-</style>
 <?php include_once('header.php'); ?>
 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gourmet Delights - Restaurant</title>
+  <link rel="stylesheet" href="assets/css/style-starter.css">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css" rel="stylesheet">
+  <style>
+    /* Custom styles for enhanced sections */
+    :root {
+      --primary-color: #ff6b6b;
+      --secondary-color: #4ecdc4;
+      --dark-color: #2d3436;
+      --light-color: #f9f9f9;
+      --accent-color: #ffd166;
+    }
+    
+    body {
+      font-family: 'Poppins', sans-serif;
+      scroll-behavior: smooth;
+    }
+    
+    h3, p {
+      text-align: center;
+    }
+    
+    /* Banner section enhancements */
+    .w3l-banner {
+      background: linear-gradient(135deg, rgba(255,107,107,0.1) 0%, rgba(78,205,196,0.1) 100%);
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .w3l-banner::before {
+      content: '';
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      background: url('assets/images/pattern.svg');
+      opacity: 0.05;
+      z-index: 0;
+    }
+    
+    .banner-text {
+      position: relative;
+      z-index: 2;
+    }
+    
+    .banner-text h5 {
+      color: var(--primary-color);
+      font-size: 1.5rem;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      margin-bottom: 1rem;
+    }
+    
+    .banner-text h2 {
+      font-size: 3.5rem;
+      font-weight: 700;
+      margin-bottom: 2rem;
+      background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      line-height: 1.2;
+    }
+    
+    .btn-order {
+      padding: 12px 30px;
+      border-radius: 50px;
+      background: var(--primary-color);
+      color: white;
+      font-weight: 600;
+      border: none;
+      position: relative;
+      overflow: hidden;
+      z-index: 1;
+      transition: all 0.3s ease;
+      box-shadow: 0 10px 20px rgba(255, 107, 107, 0.3);
+    }
+    
+    .btn-order:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 15px 25px rgba(255, 107, 107, 0.4);
+    }
+    
+    .btn-order::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+      transition: 0.5s;
+      z-index: -1;
+    }
+    
+    .btn-order:hover::before {
+      left: 100%;
+    }
+    
+    .banner-image-container {
+      position: relative;
+    }
+    
+    .floating {
+      animation: floating 3s ease-in-out infinite;
+    }
+    
+    @keyframes floating {
+      0% { transform: translateY(0px); }
+      50% { transform: translateY(-15px); }
+      100% { transform: translateY(0px); }
+    }
+    
+    /* About section */
+    .about-heading {
+      font-size: 2.5rem;
+      font-weight: 700;
+      margin-bottom: 1.5rem;
+      position: relative;
+      display: inline-block;
+    }
+    
+    .about-heading::after {
+      content: '';
+      position: absolute;
+      width: 50px;
+      height: 3px;
+      background: var(--primary-color);
+      bottom: -10px;
+      left: 0;
+    }
+    
+    .feature-card {
+      background: white;
+      border-radius: 15px;
+      padding: 30px 20px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+      transition: all 0.3s ease;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+      z-index: 1;
+    }
+    
+    .feature-card::before {
+      content: '';
+      position: absolute;
+      width: 100%;
+      height: 5px;
+      background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+      bottom: 0;
+      left: 0;
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform 0.3s ease;
+      z-index: -1;
+    }
+    
+    .feature-card:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 15px 40px rgba(0,0,0,0.1);
+    }
+    
+    .feature-card:hover::before {
+      transform: scaleX(1);
+    }
+    
+    .feature-icon {
+      width: 80px;
+      height: 80px;
+      margin-bottom: 15px;
+      transition: all 0.3s ease;
+    }
+    
+    .feature-card:hover .feature-icon {
+      transform: rotate(10deg) scale(1.1);
+    }
+    
+    .feature-title {
+      font-weight: 600;
+      margin-top: 1rem;
+      font-size: 1.1rem;
+      color: var(--dark-color);
+      transition: all 0.3s ease;
+    }
+    
+    .feature-card:hover .feature-title {
+      color: var(--primary-color);
+    }
+    
+    /* Food menu section */
+    .w3l-food {
+      background: var(--light-color);
+      position: relative;
+    }
+    
+    .w3l-food::before {
+      content: '';
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      background: url('assets/images/pattern-dots.svg');
+      opacity: 0.05;
+      z-index: 0;
+    }
+    
+    .sub-title {
+      color: var(--primary-color);
+      font-size: 1.2rem;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      margin-bottom: 0.5rem;
+    }
+    
+    .title-big {
+      font-size: 2.8rem;
+      font-weight: 700;
+      margin-bottom: 2rem;
+      position: relative;
+      display: inline-block;
+    }
+    
+    .title-big::after {
+      content: '';
+      position: absolute;
+      width: 80px;
+      height: 3px;
+      background: var(--primary-color);
+      bottom: -15px;
+      left: 50%;
+      transform: translateX(-50%);
+    }
+    
+    .food-card {
+      background: white;
+      border-radius: 20px;
+      padding: 30px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+      z-index: 1;
+    }
+    
+    .food-card:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+    }
+    
+    .food-card::before {
+      content: '';
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+      top: 0;
+      left: 0;
+      opacity: 0;
+      z-index: -1;
+      transition: opacity 0.3s ease;
+    }
+    
+    .food-card:hover::before {
+      opacity: 0.05;
+    }
+    
+    .food-image {
+      width: 100%;
+      height: 180px;
+      object-fit: cover;
+      border-radius: 15px;
+      box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+      transition: all 0.3s ease;
+    }
+    
+    .food-card:hover .food-image {
+      transform: scale(1.05);
+      box-shadow: 0 15px 25px rgba(0,0,0,0.15);
+    }
+    
+    .food-name {
+      font-size: 1.5rem;
+      font-weight: 600;
+      color: var(--dark-color);
+      margin: 1.5rem 0 0.5rem;
+      transition: all 0.3s ease;
+    }
+    
+    .food-card:hover .food-name {
+      color: var(--primary-color);
+    }
+    
+    .food-price {
+      font-size: 1.8rem;
+      font-weight: 700;
+      color: var(--primary-color);
+      margin: 1rem 0;
+    }
+    
+    .btn-food-order {
+      padding: 10px 25px;
+      border-radius: 50px;
+      background: var(--primary-color);
+      color: white;
+      font-weight: 600;
+      border: none;
+      position: relative;
+      overflow: hidden;
+      z-index: 1;
+      transition: all 0.3s ease;
+      box-shadow: 0 10px 20px rgba(255, 107, 107, 0.3);
+    }
+    
+    .btn-food-order:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 15px 25px rgba(255, 107, 107, 0.4);
+      background: var(--dark-color);
+    }
+    
+    /* Responsive adjustments */
+    @media (max-width: 992px) {
+      .banner-text h2 {
+        font-size: 2.5rem;
+      }
+      
+      .about-heading {
+        font-size: 2rem;
+      }
+      
+      .title-big {
+        font-size: 2.2rem;
+      }
+    }
+    
+    @media (max-width: 768px) {
+      .banner-text h2 {
+        font-size: 2rem;
+      }
+      
+      .feature-card {
+        margin-bottom: 1.5rem;
+      }
+      
+      .about-heading {
+        font-size: 1.8rem;
+      }
+      
+      .title-big {
+        font-size: 1.8rem;
+      }
+    }
+  </style>
+</head>
+<body>
 
-<!-- Domain Modal -->
-<div class="modal right fade" id="DomainModal" tabindex="-1" role="dialog" aria-labelledby="DomainModalLabel2">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-
-      <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
-          aria-hidden="true">&times;</span></button>
-
-      <div class="modal-body">
-        <div class="modal__content">
-          <h2 class="logo"><span class="fa fa-cutlery"></span> Canteen Management</h2>
-          <!-- if logo is image enable this   
-          <h2 class="logo">
-            <img src="image-path" alt="Your logo" title="Your logo" style="height:35px;" />
-          </h2> -->
-          <p class="mt-md-3 mt-2">Lorem ipsum dolor sit amet, elit. Eos expedita ipsam at fugiat ab.</p>
-          <img src="assets/images/p1.jpg" alt="image" class="img-fluid radius-image mt-4">
-          <div class="widget-social-icons mt-sm-5 mt-4">
-            <h5 class="widget-title">Contact Us</h5>
-            <ul class="icon-rounded address">
-              <li>
-                <p> New York, NY-90814 Hill Station 4th Street</p>
-              </li>
-              <li class="mt-3">
-                <p><span class="fa fa-phone"></span> <a href="tel:+404-11-22-89">+1-2345-345-678-11</a></p>
-              </li>
-              <li class="mt-2">
-                <p><span class="fa fa-envelope"></span> <a
-                    href="mailto:pizza@order.com">pizza@order.com</a></p>
-              </li>
-              <li class="top_li1 mt-2">
-                <p><span class="fa fa-clock-o"></span> <a href="#url">Mon - Fri : 09:00 am to 10:00 pm
-                  </a></p>
-              </li>
-            </ul>
+  <!-- Banner Section -->
+  <section class="w3l-banner" id="banner">
+    <div class="new-block py-5">
+      <div class="container">
+        <div class="row middle-section align-items-center">
+          <div class="col-lg-7 banner-text" data-aos="fade-right" data-aos-duration="1200">
+            <h5 class="animate__animated animate__fadeInDown">Eat tasty dish everyday</h5>
+            <h2 class="animate__animated animate__fadeInUp animate__delay-1s">Share your love about food</h2>
+            <a href="menu.php" class="btn btn-order animate__animated animate__fadeInUp animate__delay-2s">
+              <span class="fa fa-shopping-cart mr-2"></span> Order Online
+            </a>
           </div>
-          <div class="widget-social-icons mt-sm-5 mt-4">
-            <h5 class="widget-title">Follow Us</h5>
-            <ul class="icon-rounded">
-              <li><a class="social-link twitter" href="#url" target="_blank"><span class="fa fa-twitter"></span></a></li>
-              <li><a class="social-link linkedin" href="#url" target="_blank"><span class="fa fa-linkedin"></span></a></li>
-              <li><a class="social-link facebook" href="#url" target="_blank"><span class="fa fa-facebook"></span></a></li>
-            </ul>
+          <div class="col-lg-5 banner-image-container mt-lg-0 mt-5 pt-lg-0 pt-md-4" data-aos="fade-left" data-aos-duration="1200">
+            <img src="assets/images/main_3-.png" class="img-fluid floating" alt="Delicious food">
           </div>
-
-
         </div>
       </div>
     </div>
-    <!-- //modal-content -->
-  </div>
-  <!-- //modal-dialog -->
-</div>
-<!-- //Domain modal -->
-<section class="w3l-banner" id="banner">
-    <div class="new-block py-5">
-        <div class="container">
-            <div class="row middle-section">
-                <div class="col-lg-7 section-width align-self">
-                    <h5>Eat tasty dish everyday</h5>
-                    <h2>Share your love about food</h2>
-                    <a href="menu.php" class="btn btn-secondary btn-outline-style mt-md-5 mt-4"> 
-                        <span class="fa fa-shopping-cart mr-2"></span> Order Online</a>
-                </div>
-                <div class="col-lg-5 history-info mt-lg-0 mt-5 pt-lg-0 pt-md-4">
-                    <img src="assets/images/main_3-.png" class="img-fluid" alt="image">
-                    <!-- <div class="cost">
-                        <h5>Only</h5>
-                        <h3>$25</h3>
-                    </div> -->
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
-<!-- iphone home block -->
-<section class="w3l-about py-5">
-    <div class="container py-lg-5 py-md-4">
-        <div class="row">
-            <div class="col-lg-6">
-                <h3>We make the Best Food in your Collage</h3>
-                <h5 class="mt-lg-3 mt-2">Best food in buget and you can get it fresh and hot.
-                </h5>
-                <p class="mt-sm-4 mt-3 mb-sm-0 mb-2"></p>
-                <a href="about.php" class="btn-style btn-primary btn mt-lg-5 mt-4">Know more about us</a>
-            </div>
-            <div class="col-lg-6 mt-lg-0 mt-5">
-                <div class="row">
-                    <div class="col-6 features-with-17-left1">
-                        <a href="#url" class="icon"><img src="assets/images/pizza.png" alt="" /></a>
-                        <h4><a href="#url">Right food baked with natural ingredient</a></h4>
-                    </div>
-                    <div class="col-6 features-with-17-left1">
-                        <a href="#url" class="icon"><img src="assets/images/burger.png" alt="" /></a>
-                        <h4><a href="#url">The use of natural best quality products</a></h4>
-                    </div>
-                    <div class="col-6 features-with-17-left1 mt-5 pt-lg-3">
-                        <a href="#url" class="icon"><img src="assets/images/drink.png" alt="" /></a>
-                        <h4><a href="#url"> World’s best Chef and Nutritionist!</a></h4>
-                    </div>
-                    <div class="col-6 features-with-17-left1 mt-5 pt-lg-3">
-                        <a href="#url" class="icon"><img src="assets/images/fries.png" alt="" /></a>
-                        <h4><a href="#url">Fastest order prepared and easy pick-up</a></h4>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
-</section>
+  </section>
 
-<!-- Food Menu -->
- <section class="w3l-food" id="food">
-    <div class="foods1 py-5">
-        <div class="container py-lg-5 py-md-4">
-            <div class="title-content text-center">
-                <h6 class="sub-title">Special Iteam</h6>
-                <h3 class="title-big">Dish Of The Day</h3>
-            </div>
-            <div class="foods1-content mt-lg-5 mt-4 mb-sm-0 mb-4">
-                <div class="owl-carousel owl-theme text-center">
-                <?php 
-						$query_res= mysqli_query($db,"SELECT * FROM dishes where in_today_menu='1'"); 
-						while($product=mysqli_fetch_array($query_res))
-					    {
-                ?>
-                            <div class="item">
-                                <div class="d-grid food-info">
-                                    <div class="column">
-                                        <h4 class="name-pos"><a href="#url"><?php echo $product['title']; ?></a></h4>
-                                        <p><?php echo $product['slogan']; ?></p>
-                                        <h5>₹ <?php echo $product['price']; ?></h5>
-                                        <a href="dishes.php?c_id=<?php echo $product['c_id']; ?>&action=add1&id=<?php echo $product['d_id']; ?>" class="btn-style btn-primary btn mt-4" >Order Online</a>
-                                        <a href="#url"><?php echo '<img src="admin/Category_Image/dishes/'.$product['img'].'" alt="Food logo" class="img-fluid radius-image mt-4 responsive" style="height: 160px; width:220px">'; ?></a>
-                                    </div>
-                                </div>
-                            </div>  
-                <?php
-				         }					
-				?>
-                    <!-- <div class="item">
-                        <div class="d-grid food-info">
-                            <div class="column">
-                                <h4 class="name-pos"><a href="#url">Prosciutto e Funghi</a></h4>
-                                <p>Tomato sauce, ham, and mushrooms</p>
-                                <h5>20$</h5>
-                                <a href="#url" class="btn-style btn-primary btn mt-4">Order Online</a>
-                                <a href="#url"><img src="assets/images/p4.jpg" alt="" class="img-fluid radius-image mt-4"/></a>
-                            </div>
-                        </div> -->
-                    </div>
-                   
-                </div>
-            </div>
+  <!-- About Section -->
+  <section class="w3l-about py-5">
+    <div class="container py-lg-5 py-md-4">
+      <div class="row align-items-center">
+        <div class="col-lg-6" data-aos="fade-up" data-aos-duration="1000">
+          <h3 class="about-heading">We make the Best Food in your College</h3>
+          <h5 class="mt-lg-3 mt-2">Best food in budget and you can get it fresh and hot.</h5>
+          <a href="about.php" class="btn-style btn-primary btn mt-lg-5 mt-4 btn-order">Know more about us</a>
         </div>
+        <div class="col-lg-6 mt-lg-0 mt-5">
+          <div class="row">
+            <div class="col-md-6 col-sm-6 mb-4" data-aos="fade-up" data-aos-duration="1000" data-aos-delay="200">
+              <div class="feature-card">
+                <img src="assets/images/pizza.png" alt="Pizza" class="feature-icon">
+                <h4 class="feature-title">Right food baked with natural ingredients</h4>
+              </div>
+            </div>
+            <div class="col-md-6 col-sm-6 mb-4" data-aos="fade-up" data-aos-duration="1000" data-aos-delay="400">
+              <div class="feature-card">
+                <img src="assets/images/burger.png" alt="Burger" class="feature-icon">
+                <h4 class="feature-title">The use of natural best quality products</h4>
+              </div>
+            </div>
+            <div class="col-md-6 col-sm-6 mb-4" data-aos="fade-up" data-aos-duration="1000" data-aos-delay="600">
+              <div class="feature-card">
+                <img src="assets/images/drink.png" alt="Drink" class="feature-icon">
+                <h4 class="feature-title">World's best Chef and Nutritionist!</h4>
+              </div>
+            </div>
+            <div class="col-md-6 col-sm-6 mb-4" data-aos="fade-up" data-aos-duration="1000" data-aos-delay="800">
+              <div class="feature-card">
+                <img src="assets/images/fries.png" alt="Fries" class="feature-icon">
+                <h4 class="feature-title">Fastest order prepared and easy pick-up</h4>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
-</section>
+  </section>
+
+  <!-- Food Menu Section -->
+  <section class="w3l-food" id="food">
+    <div class="foods1 py-5">
+      <div class="container py-lg-5 py-md-4">
+        <div class="title-content text-center" data-aos="fade-up" data-aos-duration="1000">
+          <h6 class="sub-title animate__animated animate__fadeInUp">Special Item</h6>
+          <h3 class="title-big animate__animated animate__fadeInUp animate__delay-1s">Dish Of The Day</h3>
+        </div>
+        <div class="foods1-content mt-lg-5 mt-4 mb-sm-0 mb-4">
+          <div class="row">
+            <?php 
+              $query_res= mysqli_query($db,"SELECT * FROM dishes where in_today_menu='1' LIMIT 4"); 
+              while($product=mysqli_fetch_array($query_res))
+              {
+            ?>
+            <div class="col-lg-3 col-md-6 col-sm-6 mb-4" data-aos="fade-up" data-aos-duration="1000" data-aos-delay="<?php echo $counter * 200; ?>">
+              <div class="food-card text-center">
+                <?php echo '<img src="admin/Category_Image/dishes/'.$product['img'].'" alt="'.$product['title'].'" class="food-image">'; ?>
+                <h4 class="food-name"><?php echo $product['title']; ?></h4>
+                <p class="mb-3"><?php echo $product['slogan']; ?></p>
+                <h5 class="food-price">₹ <?php echo $product['price']; ?></h5>
+                <a href="dishes.php?c_id=<?php echo $product['c_id']; ?>&action=add1&id=<?php echo $product['d_id']; ?>" class="btn-food-order mt-3">
+                  <i class="fas fa-shopping-basket mr-2"></i> Order Now
+                </a>
+              </div>
+            </div>
+            <?php
+                $counter++;
+              }					
+            ?>
+          </div>
+          
+          <div class="text-center mt-5" data-aos="fade-up" data-aos-duration="1000">
+            <a href="menu.php" class="btn-order btn-lg">
+              <i class="fas fa-utensils mr-2"></i> View Full Menu
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Add your footer here -->
+
+  <!-- Scripts -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
+  <script>
+    // Initialize AOS animation
+    AOS.init({
+      once: false,
+      mirror: true,
+      offset: 120,
+      easing: 'ease-out-quad'
+    });
+    
+    // Add scroll animations
+    $(window).scroll(function() {
+      var scroll = $(window).scrollTop();
+      
+      // Fade in elements on scroll
+      $('.fade-in').each(function() {
+        var position = $(this).offset().top;
+        
+        if (position < scroll + $(window).height() - 100) {
+          $(this).addClass('active');
+        }
+      });
+    });
+    
+    // Add hover effects for buttons
+    $('.btn-order, .btn-food-order').hover(
+      function() {
+        $(this).addClass('pulse');
+      },
+      function() {
+        $(this).removeClass('pulse');
+      }
+    );
+    
+    // Add counter animation for special items display
+    $('.count-number').each(function() {
+      $(this).prop('Counter', 0).animate({
+        Counter: $(this).text()
+      }, {
+        duration: 3000,
+        easing: 'swing',
+        step: function(now) {
+          $(this).text(Math.ceil(now));
+        }
+      });
+    });
+  </script>
    <!-- How it works block starts -->
    <section class="how-it-works">
             <div class="container">
@@ -221,65 +575,452 @@ h3,p{
         <div class="chilly"></div>
 
         <!-- How it works block ends -->
-<!-- Image gallary -->
-<section class="w3l-portfolio-8 py-5">
-    <div class="portfolio-main py-lg-5 py-md-4">
-        <div class="container">
-            <div class="title-content text-center">
-                <h6 class="sub-title">Gallery</h6>
-                <h3 class="title-big">Food Gallery</h3>
-            </div>
-            <div class="row galler-top mt-lg-5 mt-4">
-                <div class="col-md-3 col-6 protfolio-item hover14 align-self">
-                    <a href="assets/images/image11.jpg" data-lightbox="example-set"
-                    data-title="Breakfast">
-                            <figure>
-                                <img src="assets/images/image11.jpg" alt="product" class="img-fluid radius-image">
-                            </figure>
-                    </a>
-                </div>
-                <div class="col-md-3 col-6 protfolio-item hover14">
-                    <a href="assets/images/image2.jpg" data-lightbox="example-set" class="mb-4"
-                    data-title="Pizza">
-                            <figure>
-                                <img src="assets/images/image2.jpg" alt="product" class="img-fluid radius-image">
-                            </figure>
-                    </a>
-                    <a href="assets/images/image1.jpg" data-lightbox="example-set"
-                    data-title="Burgers">
-                            <figure>
-                                <img src="assets/images/image1.jpg" alt="product" class="img-fluid radius-image">
-                            </figure>
-                    </a>
-                </div>
-                <div class="col-md-3 col-6 protfolio-item hover14">
-                    <a href="assets/images/image4.jpg" data-lightbox="example-set" class="mb-4"
-                    data-title="South Indian Food">
-                            <figure>
-                                <img src="assets/images/image4.jpg" alt="product" class="img-fluid radius-image">
-                            </figure>
-                    </a>
-                    <a href="assets/images/image3.jpg" data-lightbox="example-set"
-                    data-title="Chinese Food">
-                            <figure>
-                                <img src="assets/images/image3.jpg" alt="product" class="img-fluid radius-image">
-                            </figure>
-                    </a>
-                </div>
-                <div class="col-md-3 col-6 protfolio-item hover14 align-self">
-                    <a href="assets/images/image5.jpg" data-lightbox="example-set"
-                    data-title="Punjabi Food">
-                            <figure>
-                                <img src="assets/images/image5.jpg" alt="product" class="img-fluid radius-image">
-                            </figure>
-                    </a>
-                </div>
-            </div>
-        </div>
+<!-- Enhanced Food Gallery Section with Animations -->
+<section class="food-gallery py-5" id="gallery">
+  <div class="container py-lg-5 py-md-4">
+    <!-- Section Header with Animation -->
+    <div class="gallery-header text-center mb-5">
+      <h2 class="title-big mb-4 mt-2" data-aos="fade-up" data-aos-duration="1000" data-aos-delay="200">Culinary Masterpieces</h2>
+      <p class="text-muted mx-auto" style="max-width: 600px;" data-aos="fade-up" data-aos-duration="1000" data-aos-delay="300">
+        Explore our exquisite food collection, prepared with passion and presented with perfection.
+      </p>
     </div>
+
+    <!-- Filter Buttons -->
+    <div class="gallery-filter text-center mb-4" data-aos="fade-up" data-aos-duration="1000" data-aos-delay="400">
+      <button class="filter-btn active" data-filter="all">All Items</button>
+      <button class="filter-btn" data-filter="breakfast">Breakfast</button>
+      <button class="filter-btn" data-filter="main">Main Course</button>
+      <button class="filter-btn" data-filter="dessert">Desserts</button>
+      <button class="filter-btn" data-filter="drinks">Beverages</button>
+    </div>
+
+    <!-- Gallery Grid with Animations -->
+    <div class="gallery-grid" data-aos="fade-up" data-aos-duration="1000" data-aos-delay="500">
+      <div class="gallery-item breakfast" data-category="breakfast">
+        <div class="gallery-box">
+          <div class="gallery-img">
+            <img src="assets/images/image11.jpg" alt="Breakfast Delights" class="img-fluid" loading="lazy">
+            <div class="overlay">
+              <div class="overlay-content">
+                <h4>Breakfast Delights</h4>
+                <p>Start your day with our nutritious options</p>
+                <a href="assets/images/image11.jpg" class="zoom-gallery" data-lightbox="food-gallery" data-title="Breakfast Delights">
+                  <i class="fas fa-search-plus"></i>
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="gallery-item main" data-category="main">
+        <div class="gallery-box">
+          <div class="gallery-img">
+            <img src="assets/images/image2.jpg" alt="Artisan Pizza" class="img-fluid" loading="lazy">
+            <div class="overlay">
+              <div class="overlay-content">
+                <h4>Artisan Pizza</h4>
+                <p>Hand-crafted with premium ingredients</p>
+                <a href="assets/images/image2.jpg" class="zoom-gallery" data-lightbox="food-gallery" data-title="Artisan Pizza">
+                  <i class="fas fa-search-plus"></i>
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="gallery-item main" data-category="main">
+        <div class="gallery-box">
+          <div class="gallery-img">
+            <img src="assets/images/image1.jpg" alt="Gourmet Burgers" class="img-fluid" loading="lazy">
+            <div class="overlay">
+              <div class="overlay-content">
+                <h4>Gourmet Burgers</h4>
+                <p>Juicy and flavorful signature creations</p>
+                <a href="assets/images/image1.jpg" class="zoom-gallery" data-lightbox="food-gallery" data-title="Gourmet Burgers">
+                  <i class="fas fa-search-plus"></i>
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="gallery-item main" data-category="main">
+        <div class="gallery-box">
+          <div class="gallery-img">
+            <img src="assets/images/image4.jpg" alt="South Indian Cuisine" class="img-fluid" loading="lazy">
+            <div class="overlay">
+              <div class="overlay-content">
+                <h4>South Indian Cuisine</h4>
+                <p>Authentic flavors from the south</p>
+                <a href="assets/images/image4.jpg" class="zoom-gallery" data-lightbox="food-gallery" data-title="South Indian Cuisine">
+                  <i class="fas fa-search-plus"></i>
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="gallery-item main" data-category="main">
+        <div class="gallery-box">
+          <div class="gallery-img">
+            <img src="assets/images/image3.jpg" alt="Chinese Delicacies" class="img-fluid" loading="lazy">
+            <div class="overlay">
+              <div class="overlay-content">
+                <h4>Chinese Delicacies</h4>
+                <p>Bold flavors and traditional recipes</p>
+                <a href="assets/images/image3.jpg" class="zoom-gallery" data-lightbox="food-gallery" data-title="Chinese Delicacies">
+                  <i class="fas fa-search-plus"></i>
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="gallery-item main" data-category="main">
+        <div class="gallery-box">
+          <div class="gallery-img">
+            <img src="assets/images/image5.jpg" alt="Punjabi Feast" class="img-fluid" loading="lazy">
+            <div class="overlay">
+              <div class="overlay-content">
+                <h4>Punjabi Feast</h4>
+                <p>Rich and aromatic northern delights</p>
+                <a href="assets/images/image5.jpg" class="zoom-gallery" data-lightbox="food-gallery" data-title="Punjabi Feast">
+                  <i class="fas fa-search-plus"></i>
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- View More Button with Animation -->
+    <div class="text-center mt-5" data-aos="fade-up" data-aos-duration="1000" data-aos-delay="600">
+      <a href="#" class="btn btn-primary btn-style">View Full Menu</a>
+    </div>
+  </div>
 </section>
 
+<!-- Required CSS for the enhanced gallery (add to your CSS file) -->
+<style>
+  /* Gallery Section Styling */
+  .food-gallery {
+    background-color: #fcfcfc;
+    position: relative;
+    overflow: hidden;
+  }
 
+  .food-gallery::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: url('assets/images/pattern-bg.png');
+    opacity: 0.03;
+    pointer-events: none;
+  }
+
+  /* Section Title Styling */
+  .sub-title {
+    color: #ff6b00;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-size: 16px;
+    margin-bottom: 10px;
+    padding-bottom: 10px;
+  }
+
+  .sub-title::after {
+    content: '';
+    width: 50px;
+    height: 2px;
+    background: #ff6b00;
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+
+  .title-big {
+    font-size: 42px;
+    font-weight: 700;
+    color: #232323;
+  }
+
+  /* Filter Buttons */
+  .gallery-filter {
+    margin-bottom: 30px;
+  }
+
+  .filter-btn {
+    background: transparent;
+    border: 2px solid #eee;
+    padding: 8px 20px;
+    margin: 0 5px 10px;
+    border-radius: 30px;
+    color: #555;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    cursor: pointer;
+  }
+
+  .filter-btn:hover, .filter-btn.active {
+    background: #ff6b00;
+    border-color: #ff6b00;
+    color: white;
+    transform: translateY(-3px);
+    box-shadow: 0 5px 15px rgba(255, 107, 0, 0.2);
+  }
+
+  /* Gallery Grid */
+  .gallery-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    grid-gap: 20px;
+    margin-top: 30px;
+  }
+
+  /* Gallery Items */
+  .gallery-box {
+    position: relative;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    background: #fff;
+    height: 100%;
+  }
+
+  .gallery-box:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
+  }
+
+  .gallery-img {
+    position: relative;
+    overflow: hidden;
+    transition: all 0.4s ease;
+  }
+
+  .gallery-img img {
+    width: 100%;
+    height: 280px;
+    object-fit: cover;
+    transition: transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  }
+
+  .gallery-box:hover .gallery-img img {
+    transform: scale(1.1);
+  }
+
+  /* Overlay Styling */
+  .overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: all 0.4s ease;
+  }
+
+  .gallery-box:hover .overlay {
+    opacity: 1;
+  }
+
+  .overlay-content {
+    text-align: center;
+    padding: 20px;
+    transform: translateY(20px);
+    opacity: 0;
+    transition: all 0.4s 0.1s ease;
+    color: white;
+  }
+
+  .gallery-box:hover .overlay-content {
+    transform: translateY(0);
+    opacity: 1;
+  }
+
+  .overlay-content h4 {
+    font-size: 20px;
+    font-weight: 600;
+    margin-bottom: 8px;
+    color: white;
+  }
+
+  .overlay-content p {
+    font-size: 14px;
+    margin-bottom: 15px;
+    color: rgba(255, 255, 255, 0.8);
+  }
+
+  .zoom-gallery {
+    display: inline-block;
+    width: 50px;
+    height: 50px;
+    line-height: 50px;
+    border-radius: 50%;
+    background: #ff6b00;
+    color: white;
+    text-align: center;
+    transition: all 0.3s ease;
+  }
+
+  .zoom-gallery:hover {
+    transform: scale(1.1);
+    background: white;
+    color: #ff6b00;
+  }
+
+  /* Button Styling */
+  .btn-style {
+    padding: 12px 35px;
+    font-size: 16px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    border-radius: 30px;
+    background: #ff6b00;
+    border-color: #ff6b00;
+  }
+
+  .btn-style:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 20px rgba(255, 107, 0, 0.2);
+    background: #e55f00;
+    border-color: #e55f00;
+  }
+
+  /* Responsive adjustments */
+  @media (max-width: 991px) {
+    .title-big {
+      font-size: 36px;
+    }
+    .gallery-grid {
+      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    }
+  }
+
+  @media (max-width: 768px) {
+    .title-big {
+      font-size: 32px;
+    }
+    .gallery-grid {
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    }
+  }
+
+  /* Animation for items appearing with delay */
+  .gallery-item {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: all 0.5s ease;
+  }
+
+  .gallery-item.show {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* Animation for filtered items */
+  .gallery-item.hide {
+    display: none;
+  }
+</style>
+
+<!-- Required JavaScript for animations and functionality (add before closing body tag) -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.3/js/lightbox.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/js/all.min.js"></script>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    // Initialize AOS animation library
+    AOS.init();
+
+    // Show gallery items with sequential animation
+    const galleryItems = document.querySelectorAll('.gallery-item');
+    galleryItems.forEach((item, index) => {
+      setTimeout(() => {
+        item.classList.add('show');
+      }, 100 * index);
+    });
+
+    // Filter functionality
+    const filterButtons = document.querySelectorAll('.filter-btn');
+    
+    filterButtons.forEach(button => {
+      button.addEventListener('click', function() {
+        // Update active button
+        filterButtons.forEach(btn => btn.classList.remove('active'));
+        this.classList.add('active');
+        
+        // Get filter value
+        const filterValue = this.getAttribute('data-filter');
+        
+        // Filter items
+        galleryItems.forEach(item => {
+          if(filterValue === 'all' || item.getAttribute('data-category') === filterValue) {
+            item.classList.remove('hide');
+            setTimeout(() => {
+              item.classList.add('show');
+            }, 100);
+          } else {
+            item.classList.add('hide');
+            item.classList.remove('show');
+          }
+        });
+      });
+    });
+
+    // Enhanced lightbox settings
+    lightbox.option({
+      'resizeDuration': 300,
+      'wrapAround': true,
+      'albumLabel': "Image %1 of %2",
+      'fadeDuration': 300,
+      'showImageNumberLabel': true
+    });
+
+    // Parallax effect for background
+    window.addEventListener('scroll', function() {
+      const scrollPosition = window.pageYOffset;
+      const gallerySection = document.querySelector('.food-gallery');
+      
+      if (gallerySection) {
+        const rect = gallerySection.getBoundingClientRect();
+        if (rect.top < window.innerHeight && rect.bottom > 0) {
+          gallerySection.style.backgroundPosition = `center ${scrollPosition * 0.04}px`;
+        }
+      }
+    });
+
+    // Hover effect for gallery items
+    galleryItems.forEach(item => {
+      item.addEventListener('mouseenter', function() {
+        this.querySelector('.gallery-img').style.transform = 'scale(1.02)';
+      });
+      
+      item.addEventListener('mouseleave', function() {
+        this.querySelector('.gallery-img').style.transform = 'scale(1)';
+      });
+    });
+  });
+</script>
   <!-- footers 20 -->
   <?php include_once('footer.php'); ?>
   
