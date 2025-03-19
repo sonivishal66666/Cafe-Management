@@ -1,194 +1,258 @@
 <?php
-
 include("../connection/connect.php");
-error_reporting(0);
+error_reporting(0); // Changed from E_ALL for production
+ini_set('display_errors', 0); // Changed from 1 for production
 session_start();
-if(strlen($_SESSION['st_id'])==0)
-{ 
-header('location:login.php');
-}
-else
-{
-  if(isset($_POST['update']))
-  {
-$form_id=$_GET['form_id'];
-$status=$_POST['status'];
-$remark=$_POST['remark'];
-$query=mysqli_query($db,"insert into remark(frm_id,status,remark) values('$form_id','$status','$remark')");
-$sql=mysqli_query($db,"update users_orders set status='$status' where o_id='$form_id'");
 
-echo "<script>alert('form details updated successfully');</script>";
+// Check if user is logged in
+if(strlen($_SESSION['adm_id']) == 0) { 
+    header('location:login.php');
+    exit();
+} else {
+    // Process form submission
+    if(isset($_POST['update'])) {
+        $form_id = mysqli_real_escape_string($db, $_GET['form_id']); // Added security
+        $status = mysqli_real_escape_string($db, $_POST['status']);
+        $remark = mysqli_real_escape_string($db, $_POST['remark']);
+        
+        // Insert remark
+        $query = mysqli_query($db, "INSERT INTO remark(frm_id, status, remark) VALUES('$form_id', '$status', '$remark')");
+        
+        // Update order status
+        $sql = mysqli_query($db, "UPDATE users_orders SET status='$status' WHERE o_id='$form_id'");
 
-
-  }
-
- ?>
-<script language="javascript" type="text/javascript">
-function f2()
-{
-window.close();
-}ser
-function f3()
-{
-window.print(); 
-}
-</script>
-
+        if($query && $sql) {
+            $success_message = "Order status updated successfully!";
+        } else {
+            $error_message = "Something went wrong. Please try again.";
+        }
+    }
+?>
+<!DOCTYPE html>
+<html lang="en">
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <!-- Tell the browser to be responsive to screen width -->
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="">
+    <meta name="description" content="Admin Dashboard - Order Status Update">
     <meta name="author" content="">
-    <!-- Favicon icon -->
     <link rel="icon" type="image/png" sizes="16x16" href="images/favicon.png">
-    <title>Ela - Bootstrap Admin Dashboard Template</title>
+    <title>Order Status Update - Admin Dashboard</title>
+    
     <!-- Bootstrap Core CSS -->
-    <link href="css/lib/bootstrap/bootstrap.min.css" rel="stylesheet">
-    <!-- Custom CSS -->
-    <link href="css/helper.css" rel="stylesheet">
-    <link href="css/style.css" rel="stylesheet">
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
-    <!-- WARNING: Respond.js doesn't work if you view the page via file:** -->
-    <!--[if lt IE 9]>
-    <script src="https:**oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
-    <script src="https:**oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
-<![endif]-->
-<style type="text/css" rel="stylesheet">
-
-
-.indent-small {
-  margin-left: 5px;
-}
-.form-group.internal {
-  margin-bottom: 0;
-}
-.dialog-panel {
-  margin: 10px;
-}
-.datepicker-dropdown {
-  z-index: 200 !important;
-}
-.panel-body {
-  background: #e5e5e5;
-  /* Old browsers */
-  background: -moz-radial-gradient(center, ellipse cover, #e5e5e5 0%, #ffffff 100%);
-  /* FF3.6+ */
-  background: -webkit-gradient(radial, center center, 0px, center center, 100%, color-stop(0%, #e5e5e5), color-stop(100%, #ffffff));
-  /* Chrome,Safari4+ */
-  background: -webkit-radial-gradient(center, ellipse cover, #e5e5e5 0%, #ffffff 100%);
-  /* Chrome10+,Safari5.1+ */
-  background: -o-radial-gradient(center, ellipse cover, #e5e5e5 0%, #ffffff 100%);
-  /* Opera 12+ */
-  background: -ms-radial-gradient(center, ellipse cover, #e5e5e5 0%, #ffffff 100%);
-  /* IE10+ */
-  background: radial-gradient(ellipse at center, #e5e5e5 0%, #ffffff 100%);
-  /* W3C */
-  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#e5e5e5', endColorstr='#ffffff', GradientType=1);
-  /* IE6-9 fallback on horizontal gradient */
-  font: 600 15px "Open Sans", Arial, sans-serif;
-}
-label.control-label {
-  font-weight: 600;
-  color: #777;
-}
-
-
-
-
-
-
-
-
-table { 
-	width: 650px; 
-	border-collapse: collapse; 
-	margin: auto;
-	margin-top:50px;
-	}
-
-/* Zebra striping */
-tr:nth-of-type(odd) { 
-	background: #eee; 
-	}
-
-th { 
-	background: #004684; 
-	color: white; 
-	font-weight: bold; 
-	}
-
-td, th { 
-	padding: 10px; 
-	border: 1px solid #ccc; 
-	text-align: left; 
-	font-size: 14px;
-	}
-
-
-
-	</style>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --primary-color: #4e73df;
+            --success-color: #1cc88a;
+            --info-color: #36b9cc;
+            --warning-color: #f6c23e;
+            --danger-color: #e74a3b;
+            --dark-color: #5a5c69;
+            --light-color: #f8f9fc;
+        }
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #f8f9fc;
+            color: #444;
+            padding: 0;
+            margin: 0;
+        }
+        
+        .card {
+            border: none;
+            border-radius: 0.35rem;
+            box-shadow: 0 0.15rem 1.75rem 0 rgba(58, 59, 69, 0.15);
+        }
+        
+        .card-header {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 1rem 1.5rem;
+            border-top-left-radius: 0.35rem;
+            border-top-right-radius: 0.35rem;
+            font-weight: 600;
+        }
+        
+        .card-body {
+            padding: 1.5rem;
+            background: white;
+        }
+        
+        .form-label {
+            font-weight: 600;
+            color: var(--dark-color);
+        }
+        
+        .form-control, .form-select {
+            border-radius: 0.35rem;
+            border: 1px solid #d1d3e2;
+            padding: 0.75rem 1rem;
+            font-size: 0.9rem;
+        }
+        
+        .form-control:focus, .form-select:focus {
+            border-color: #bac8f3;
+            box-shadow: 0 0 0 0.25rem rgba(78, 115, 223, 0.25);
+        }
+        
+        .btn-primary {
+            background-color: var(--primary-color);
+            border-color: var(--primary-color);
+        }
+        
+        .btn-primary:hover {
+            background-color: #4262c7;
+            border-color: #4262c7;
+        }
+        
+        .btn-danger {
+            background-color: var(--danger-color);
+            border-color: var(--danger-color);
+        }
+        
+        .alert {
+            border-radius: 0.35rem;
+            border-left: 0.25rem solid;
+        }
+        
+        .alert-success {
+            background-color: rgba(28, 200, 138, 0.1);
+            border-left-color: var(--success-color);
+            color: #14a074;
+        }
+        
+        .alert-danger {
+            background-color: rgba(231, 74, 59, 0.1);
+            border-left-color: var(--danger-color);
+            color: #d52a1a;
+        }
+        
+        .order-info {
+            background-color: var(--light-color);
+            padding: 1rem;
+            border-radius: 0.35rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .order-number {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--primary-color);
+        }
+        
+        .btn {
+            font-weight: 500;
+            padding: 0.5rem 1rem;
+            border-radius: 0.35rem;
+        }
+        
+        .btn-icon {
+            margin-right: 0.5rem;
+        }
+    </style>
 </head>
 
 <body>
-
-<div style="margin-left:50px;">
- <form name="updateticket" id="updatecomplaint" method="post"> 
- 
- 
- 
- 
-<table  border="0" cellspacing="0" cellpadding="0">
-     <tr >
-      <td><b>form Number</b></td>
-      <td><?php echo htmlentities($_GET['form_id']); ?></td>
-    </tr>
-	<tr>
-      <td  >&nbsp;</td>
-
-      <td >&nbsp;</td>
-    </tr>
-   
-    <tr >
-      <td><b>Status</b></td>
-      <td><select name="status" required="required" class="form-group">
-              <option value="">Select Status</option>
-              <option value="in process">In Process</option>
-              <option value="prepared">prepared</option> 
-              <option value="closed">Closed</option>
-              <option value="rejected">rejected</option>            
-      </select></td>
-    </tr>
-
-
-      <tr >
-      <td><b>Remark</b></td>
-      <td><textarea name="remark" cols="50" rows="10" ></textarea></td>
-    </tr>
+    <div class="container py-5">
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <div class="card">
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                        <h5 class="m-0"><i class="fas fa-clipboard-list me-2"></i>Update Order Status</h5>
+                        <div>
+                            <button type="button" class="btn btn-sm btn-light" onclick="window.print()">
+                                <i class="fas fa-print btn-icon"></i>Print
+                            </button>
+                            <button type="button" class="btn btn-sm btn-light ms-2" onclick="window.close()">
+                                <i class="fas fa-times btn-icon"></i>Close
+                            </button>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <?php if(isset($success_message)): ?>
+                            <div class="alert alert-success" role="alert">
+                                <i class="fas fa-check-circle me-2"></i><?php echo $success_message; ?>
+                            </div>
+                        <?php endif; ?>
+                        
+                        <?php if(isset($error_message)): ?>
+                            <div class="alert alert-danger" role="alert">
+                                <i class="fas fa-exclamation-triangle me-2"></i><?php echo $error_message; ?>
+                            </div>
+                        <?php endif; ?>
+                        
+                        <div class="order-info mb-4">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <p class="mb-1"><strong>Order #</strong></p>
+                                    <p class="order-number"><?php echo htmlentities($_GET['form_id']); ?></p>
+                                </div>
+                                <div class="col-md-6 text-md-end">
+                                    <p class="mb-1"><strong>Date</strong></p>
+                                    <p><?php echo date('F d, Y'); ?></p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <form name="updateticket" id="updatecomplaint" method="post">
+                            <div class="mb-4">
+                                <label for="status" class="form-label">Update Status</label>
+                                <select name="status" id="status" class="form-select" required>
+                                    <option value="">Select Status</option>
+                                    <option value="in process">In Process</option>
+                                    <option value="prepared">Prepared</option> 
+                                    <option value="closed">Closed</option>
+                                    <option value="rejected">Rejected</option>
+                                </select>
+                            </div>
+                            
+                            <div class="mb-4">
+                                <label for="remark" class="form-label">Remarks</label>
+                                <textarea name="remark" id="remark" class="form-control" rows="5" placeholder="Enter your remarks here..."></textarea>
+                            </div>
+                            
+                            <div class="d-flex">
+                                <button type="submit" name="update" class="btn btn-primary">
+                                    <i class="fas fa-save btn-icon"></i>Update Status
+                                </button>
+                                <button type="button" class="btn btn-danger ms-2" onclick="window.close()">
+                                    <i class="fas fa-times btn-icon"></i>Cancel
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
     
-
-
-        <tr>
-      <td><b>Action</b></td>
-      <td><input type="submit" name="update"  class="btn btn-primary" value="Submit">
-	   
-      <input name="Submit2" type="submit"  class="btn btn-danger"  value="Close this window " onClick="return f2();" style="cursor: pointer;"  /></td>
-    </tr>
-
-
-
-     
-   
-   
-
- 
-</table>
- </form>
-</div>
-
+    <!-- Bootstrap core JavaScript -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <script>
+        // Auto-close alert messages after 5 seconds
+        document.addEventListener('DOMContentLoaded', function() {
+            setTimeout(function() {
+                const alerts = document.querySelectorAll('.alert');
+                alerts.forEach(function(alert) {
+                    alert.style.opacity = '0';
+                    alert.style.transition = 'opacity 1s';
+                    setTimeout(function() {
+                        alert.style.display = 'none';
+                    }, 1000);
+                });
+            }, 5000);
+        });
+    </script>
 </body>
 </html>
-
-     <?php } ?>
+<?php } ?>

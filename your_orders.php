@@ -417,6 +417,7 @@ else
 	</head>
 
 <body>
+  
 <?php include_once('header.php'); ?>
 <link rel="stylesheet" href="assets/css/style-starter.css">
 <section class="w3l-breadcrumb">
