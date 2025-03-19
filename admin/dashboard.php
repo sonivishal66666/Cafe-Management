@@ -550,82 +550,6 @@ if(empty($_SESSION["adm_id"]))
     </div>
 </div>
 
-<!-- Stats Summary Bar -->
-<div class="container-fluid dashboard-container">
-    <div class="row stats-summary animate-fade-in">
-        <div class="col-md-12">
-            <h3><i class="fa fa-chart-line mr-2"></i>System Overview</h3>
-            <div class="row">
-                <div class="col-md-3 col-sm-6">
-                    <div class="stats-item">
-                        <div class="stats-icon">
-                            <i class="fa fa-calendar"></i>
-                        </div>
-                        <div class="stats-info">
-                            <h4><?php echo date('d M Y'); ?></h4>
-                            <p>Current Date</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-3 col-sm-6">
-                    <div class="stats-item">
-                        <div class="stats-icon">
-                            <i class="fa fa-shopping-cart"></i>
-                        </div>
-                        <div class="stats-info">
-                            <h4>
-                                <?php
-                                $today = date('Y-m-d');
-                                $sql = "SELECT COUNT(*) as count FROM users_orders WHERE DATE(date) = '$today'";
-                                $result = mysqli_query($db, $sql);
-                                $row = mysqli_fetch_assoc($result);
-                                echo $row['count'];
-                                ?>
-                            </h4>
-                            <p>Today's Orders</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-3 col-sm-6">
-                    <div class="stats-item">
-                        <div class="stats-icon">
-                            <i class="fa fa-dollar"></i>
-                        </div>
-                        <div class="stats-info">
-                            <h4>
-                            ₹
-                            <?php
-                                $sql = "SELECT SUM(price) as total FROM users_orders WHERE DATE(date) = '$today'";
-                                $result = mysqli_query($db, $sql);
-                                $row = mysqli_fetch_assoc($result);
-                                echo number_format($row['total'] ? $row['total'] : 0, 2);
-                                ?>
-                            </h4>
-                            <p>Today's Revenue</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-3 col-sm-6">
-                    <div class="stats-item">
-                        <div class="stats-icon">
-                            <i class="fa fa-truck"></i>
-                        </div>
-                        <div class="stats-info">
-                            <h4>
-                                <?php
-                                $sql = "SELECT COUNT(*) as count FROM users_orders WHERE status = 'pending'";
-                                $result = mysqli_query($db, $sql);
-                                $row = mysqli_fetch_assoc($result);
-                                echo $row['count'];
-                                ?>
-                            </h4>
-                            <p>Pending Orders</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
 
     <!-- Main Dashboard Content -->
     <div class="row">
@@ -738,6 +662,4 @@ if(empty($_SESSION["adm_id"]))
         </div>
     </div>
 
-    <?php include_once('footer.php');
 
-?>
