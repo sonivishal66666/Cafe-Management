@@ -118,7 +118,6 @@ session_start();
 <!-- End Container fluid -->
 
 <!-- footer -->
-<?php include_once('footer.php');?>
 
 <!-- Required Scripts -->
 <script src="js/lib/jquery/jquery.min.js"></script>
