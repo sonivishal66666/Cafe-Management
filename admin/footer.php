@@ -14,11 +14,11 @@
     <div class="footer-section links">
       <h2 class="footer-title">Quick Links</h2>
       <ul>
-        <li><a href="#">Dashboard</a></li>
-        <li><a href="#">Manage Orders</a></li>
-        <li><a href="#">Manage Menu</a></li>
-        <li><a href="#">Food Categories</a></li>
-        <li><a href="#">Student Profiles</a></li>
+        <li><a href="dashboard.php">Dashboard</a></li>
+        <li><a href="all_orders.php">Manage Orders</a></li>
+        <li><a href="all_menu.php">Manage Menu</a></li>
+        <li><a href="add_category.php">Food Categories</a></li>
+        <li><a href="allusers.php">Student Profiles</a></li>
       </ul>
     </div>
     <div class="footer-section contact">
@@ -43,7 +43,7 @@
 <style>
   /* Footer Styles */
   .footer {
-    background: linear-gradient(135deg, #1a1a1a, #2d2d2d);
+    background: linear-gradient(135deg,rgb(10, 99, 112),rgb(1, 43, 66));
     color: #fff;
     padding: 0;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
