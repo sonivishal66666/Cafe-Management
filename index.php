@@ -452,6 +452,8 @@
               </div>
             </div>
             <?php
+            $counter = 0; // or any initial value that makes sense for your logic
+
                 $counter++;
               }					
             ?>

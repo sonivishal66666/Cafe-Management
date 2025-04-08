@@ -289,6 +289,7 @@ header('location:index.php');
                         </li>
                         <li class="nav-label">Log</li>
                         <li> <a class="" href="status.php" aria-expanded="false"> <span><i class="fa fa-user f-s-20 "></i></span><span class="hide-menu">Status</span> <?= $rowcount >0 ? '<span class="badge"> '.$rowcount.'</span>':'' ?>   </a>
+                        
 <!-- 
                         <li> <a class="has-arrow  " href="#" aria-expanded="false">  <span><i class="fa fa-user f-s-20 "></i></span><span class="hide-menu">Users</span></a>
                             <ul aria-expanded="false" class="collapse">
@@ -319,6 +320,11 @@ header('location:index.php');
 								  
                             </ul>
                         </li>
+                        <li> <a class="" href="qr_scanner.php" aria-expanded="false"> <span><i class="fa fa-qrcode"></i></span><span class="hide-menu"> QR Scan </span> </a>
+                            
+                        </li>
+
+                        
                          
                     </ul>
                 </nav>

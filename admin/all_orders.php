@@ -1,3 +1,9 @@
+<?php
+    include("../connection/connect.php");
+    error_reporting(0);
+    session_start();
+    ?>
+    <?php include_once('header.php');?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -204,12 +210,7 @@
     </style>
 </head>
 <body>
-    <?php
-    include("../connection/connect.php");
-    error_reporting(0);
-    session_start();
-    ?>
-    <?php include_once('header.php');?>
+    
     
     <div class="container-fluid py-4">
         <div class="page-header d-flex justify-content-between align-items-center">

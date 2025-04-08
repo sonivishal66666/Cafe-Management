@@ -1,7 +1,14 @@
 <?php
 // Enable error reporting
-error_reporting(E_ALL);
-ini_set('display_errors', 1);
+require 'vendor/autoload.php';
+error_reporting(E_ALL & ~E_DEPRECATED & ~E_NOTICE);
+ini_set('display_errors', 0);
+
+    
+// Import PHPMailer classes - ensure these are correctly imported
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\SMTP;
+use PHPMailer\PHPMailer\Exception;
 
 // Include database connection
 include("connection/connect.php");
@@ -26,6 +33,106 @@ $item_total = 0;
 $success = "";
 $error = "";
 
+// Function to send order confirmation email
+function sendOrderConfirmationEmail($db, $order_id, $user_email, $payment_status, $pickup_time, $items, $total_amount) {
+    // Create new PHPMailer instance
+    $mail = new PHPMailer(true);
+    
+    try {
+        // Server settings
+        $mail->SMTPDebug = 0;  // Enable verbose debug output (0 for no output, 2 for detailed)
+        $mail->isSMTP();
+        $mail->Host = 'smtp.gmail.com';
+        $mail->SMTPAuth = true;
+        $mail->Username = 'dcsoni6350@gmail.com';
+        $mail->Password = 'jpzt oaqy iiar ydow';  // Make sure this is an app password if using Gmail
+        $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
+        $mail->Port = 587;
+        
+        // Recipients
+        $mail->setFrom('dcsoni6350@gmail.com', 'Canteen Management');
+        $mail->addAddress($user_email);
+        
+        // Content
+        $mail->isHTML(true);
+        $mail->Subject = 'Order Confirmation - #' . $order_id;
+        
+        // Build email body
+        $body = '
+        <html>
+        <head>
+            <style>
+                body { font-family: Arial, sans-serif; }
+                .container { width: 80%; margin: 0 auto; }
+                .header { background-color: #4CAF50; color: white; padding: 10px; text-align: center; }
+                .content { padding: 20px; border: 1px solid #ddd; }
+                table { width: 100%; border-collapse: collapse; }
+                th, td { padding: 8px; text-align: left; border-bottom: 1px solid #ddd; }
+                .footer { margin-top: 20px; font-size: 12px; color: #777; }
+            </style>
+        </head>
+        <body>
+            <div class="container">
+                <div class="header">
+                    <h2>Thank you for your order!</h2>
+                </div>
+                <div class="content">
+                    <p>Hello,</p>
+                    <p>Your order #' . $order_id . ' has been received and confirmed.</p>
+                    <p><strong>Order Details:</strong></p>
+                    <ul>
+                        <li>Order ID: #' . $order_id . '</li>
+                        <li>Payment Status: ' . $payment_status . '</li>
+                        <li>Pickup Time: ' . $pickup_time . '</li>
+                    </ul>
+                    
+                    <p><strong>Items Ordered:</strong></p>
+                    <table>
+                        <tr>
+                            <th>Item</th>
+                            <th>Quantity</th>
+                            <th>Price</th>
+                        </tr>';
+        
+        // Add items to the email
+        foreach ($items as $item) {
+            $body .= '
+                        <tr>
+                            <td>' . $item["title"] . '</td>
+                            <td>' . $item["quantity"] . '</td>
+                            <td>₹' . number_format($item["price"], 2) . '</td>
+                        </tr>';
+        }
+        
+        $body .= '
+                        <tr>
+                            <td colspan="2" style="text-align: right;"><strong>Total:</strong></td>
+                            <td><strong>₹' . number_format($total_amount, 2) . '</strong></td>
+                        </tr>
+                    </table>
+                    
+                    <p>Please collect your order at the specified pickup time.</p>
+                    <p>Thank you for choosing our canteen!</p>
+                </div>
+                <div class="footer">
+                    <p>If you have any questions, please contact us at canteen@example.com</p>
+                </div>
+            </div>
+        </body>
+        </html>';
+        
+        $mail->Body = $body;
+        $mail->AltBody = "Order #$order_id confirmed. Payment: $payment_status. Pickup: $pickup_time. Total: ₹" . number_format($total_amount, 2);
+        
+        $mail->send();
+        error_log("Email sent successfully to: $user_email for order #$order_id");
+        return true;
+    } catch (Exception $e) {
+        error_log("Email could not be sent for order #$order_id. Error: {$mail->ErrorInfo}");
+        return false;
+    }
+}
+
 // Handle Payment Response from Cashfree
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['txnId']) && isset($_POST['txnStatus'])) {
     // Log payment response
@@ -39,13 +146,39 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['txnId']) && isset($_P
     // Update payment_status in payments table
     $updateSQL = "UPDATE payments SET payment_status = '$payment_status', transaction_id = '$transaction_id' WHERE order_id = '$order_id'";
     mysqli_query($db, $updateSQL);
-
-    // Redirect based on payment success or failure
+    
+    // Get order details for email
     if ($payment_status == 'Paid') {
-        header('Location: success.php');
-    } else {
-        header('Location: failure.php');
+        // Get user email
+        $order_query = "SELECT o.*, u.email FROM users_orders o 
+                        JOIN users u ON o.u_id = u.u_id 
+                        WHERE o.o_id = '$order_id'";
+        $order_result = mysqli_query($db, $order_query);
+        
+        if ($order_data = mysqli_fetch_assoc($order_result)) {
+            $user_email = $order_data['email'];
+            $pickup_time = $order_data['pick_time'];
+            
+            // Get order items
+            $items_query = "SELECT * FROM users_orders WHERE o_id = '$order_id'";
+            $items_result = mysqli_query($db, $items_query);
+            
+            $items = array();
+            $total = 0;
+            
+            while ($item = mysqli_fetch_assoc($items_result)) {
+                $items[] = $item;
+                $total += ($item['price'] * $item['quantity']);
+            }
+            
+            // Send confirmation email
+            $email_sent = sendOrderConfirmationEmail($db, $order_id, $user_email, $payment_status, $pickup_time, $items, $total);
+            error_log("Email sending attempt for order #$order_id: " . ($email_sent ? "Success" : "Failed"));
+        }
     }
+
+    // Redirect to the order confirmation page with status information
+    header("Location: order_confirmation.php?order_id=$order_id&status=$payment_status");
     exit(); // Stop further execution
 }
 
@@ -83,7 +216,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit'])) {
                     $item_quantity = intval($item["quantity"]);
                     $item_price = floatval($item["price"]);
                     $pickup_time = mysqli_real_escape_string($db, $_POST['pickTime']);
-                    $payment_status = ($payment_method == 'COD') ? 'COD' : 'PENDING';
+                    $payment_status = ($payment_method == 'COD') ? 'COD' : 'Paid';
                     
                     $SQL = "INSERT INTO users_orders(u_id, title, quantity, price, pick_time, payment_status) 
                             VALUES(?, ?, ?, ?, ?, ?)";
@@ -108,29 +241,28 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit'])) {
                 // If payment method is COD, process is complete
                 if ($payment_method == 'COD') {
                     mysqli_commit($db);
+                    $order_id = mysqli_insert_id($db); // Get the last inserted order ID
+                    
+                    // Send order confirmation email for COD
+                    $user_email = $user_data['email'];
+                    $pickup_time = $_POST['pickTime'];
+                    
+                    // Send confirmation email
+                    $email_sent = sendOrderConfirmationEmail($db, $order_id, $user_email, 'COD', $pickup_time, $_SESSION["cart_item"], $item_total);
+                    error_log("COD email sending attempt for order #$order_id: " . ($email_sent ? "Success" : "Failed"));
+                    
                     unset($_SESSION["cart_item"]);
-                    $success = "<div class='alert alert-success alert-dismissible fade show'>
-                                    <button type='button' class='close' data-dismiss='alert'>&times;</button>
-                                    <strong>Success!</strong> Your order has been placed successfully!
-                                    <p>You will be redirected to Order Page in <span id='counter'>5</span> second(s).</p>
-                                </div>
-                                <script>
-                                function countdown() {
-                                    var i = document.getElementById('counter');
-                                    if (parseInt(i.innerHTML)<=0) {
-                                        location.href = 'your_orders.php';
-                                    }
-                                    i.innerHTML = parseInt(i.innerHTML)-1;
-                                }
-                                setInterval(countdown, 1000);
-                                </script>";
+                    
+                    // Redirect to order confirmation page
+                    header("Location: order_confirmation.php?order_id=".$order_id."&status=COD");
+                    exit();
                 } elseif ($payment_method == 'UPI') {
                     // For UPI, get the last inserted order ID
                     $order_id = mysqli_insert_id($db);
                     
                     // Insert into payments table with PENDING status
                     $payment_SQL = "INSERT INTO payments (order_id, user_id, payment_amount, payment_status, payment_method) 
-                            VALUES (?, ?, ?, 'PENDING', 'UPI')";
+                            VALUES (?, ?, ?, 'Paid', 'UPI')";
                     
                     $payment_stmt = mysqli_prepare($db, $payment_SQL);
                     mysqli_stmt_bind_param($payment_stmt, "iid", $order_id, $user_id, $item_total);
@@ -146,7 +278,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit'])) {
                     $customer_name = isset($user_data['username']) ? $user_data['username'] : "Customer";
                     $customer_email = isset($user_data['email']) ? $user_data['email'] : "customer@example.com";
                     $customer_phone = isset($user_data['phone']) ? $user_data['phone'] : "9999999999";
-                    $return_url = "http://localhost:3000/Canteen_Management/your_orders.php";
+                    $return_url = "https://canteen-app-23941260955.us-central1.run.app/order_confirmation.php";
             
                     $postData = array(
                         "appId" => $app_id,

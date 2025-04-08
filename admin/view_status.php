@@ -1,5 +1,3 @@
-<!DOCTYPE html>
-<html lang="en">
 <?php
 include("../connection/connect.php");
 error_reporting(0);
@@ -21,6 +19,10 @@ if(isset($_POST['submit']))
 
 include_once('header.php');
 ?>
+
+<!DOCTYPE html>
+<html lang="en">
+
 
 <!-- Custom CSS for animations and styling -->
 <style>

@@ -1,5 +1,3 @@
-<!DOCTYPE html>
-<html lang="en">
 <?php
 include("../connection/connect.php");
 error_reporting(0);
@@ -91,6 +89,10 @@ if(isset($_POST['submit']))           //if upload btn is pressed
 ?>   	
 
 <?php include_once('header.php');?>
+
+<!DOCTYPE html>
+<html lang="en">
+
 
 <!-- Add these in your header.php file if not already added -->
 <!-- Bootstrap 5 CSS -->

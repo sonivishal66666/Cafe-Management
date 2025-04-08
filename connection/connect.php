@@ -1,16 +1,15 @@
 <?php
-
-//main connection file for both admin & front end
-$servername = "localhost"; //server
-$username = "root"; //username
-$password = ""; //password
-$dbname = "online_rest";  //database
+$host = '35.232.108.75';  // Your Cloud SQL public IP
+$username = 'root';       // Your DB username
+$password = 'password';   // Your DB password
+$dbname = 'online_rest';  // Your DB name
+$port = 3306;             // Default MySQL port
 
 // Create connection
-$db = mysqli_connect($servername, $username, $password, $dbname); // connecting 
-// Check connection
-if (!$db) {       //checking connection to DB	
-    die("Connection failed: " . mysqli_connect_error());
-}
+$db = new mysqli($host, $username, $password, $dbname, $port);
 
+// Check connection
+if ($db->connect_error) {
+    die("Connection failed: " . $db->connect_error);
+}
 ?>

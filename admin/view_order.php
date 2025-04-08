@@ -1,10 +1,12 @@
-<!DOCTYPE html>
-<html lang="en">
 <?php
 include("../connection/connect.php");
 error_reporting(0);
 session_start();
 ?>
+
+<!DOCTYPE html>
+<html lang="en">
+
 
 <head>
     <meta charset="UTF-8">
@@ -480,6 +482,5 @@ session_start();
         }
     </style>
 
-    <?php include_once('footer.php'); ?>
 </body>
 </html>

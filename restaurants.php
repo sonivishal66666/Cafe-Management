@@ -1,10 +1,11 @@
-<!DOCTYPE html>
-<html lang="en">
 <?php
 include("connection/connect.php");
-error_reporting(0);
+
 session_start();
 ?>
+<!DOCTYPE html>
+<html lang="en">
+
  <!-- Bootstrap core CSS -->
     <link href="css/font-awesome.min.css" rel="stylesheet">
     <link href="css/animsition.min.css" rel="stylesheet">

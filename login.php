@@ -1,12 +1,9 @@
-
 <?php
 include("connection/connect.php"); 
-error_reporting(0); 
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
-
 session_start();
+?>
+<?php
+
 if(isset($_POST['submit'])) {
     $username = mysqli_real_escape_string($db, $_POST['username']);
     $password = mysqli_real_escape_string($db, $_POST['password']); 
