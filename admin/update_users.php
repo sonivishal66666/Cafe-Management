@@ -1,5 +1,3 @@
-<!DOCTYPE html>
-<html lang="en">
 <?php
 session_start();
 error_reporting(0);
@@ -63,6 +61,10 @@ if(!$user) {
 // Include header
 include_once('header.php');
 ?>
+
+<!DOCTYPE html>
+<html lang="en">
+
 
 <head>
     <!-- Required meta tags -->

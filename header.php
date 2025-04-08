@@ -1,10 +1,13 @@
-<!DOCTYPE html>
-<html lang="en">
 <?php
 include("connection/connect.php");
-error_reporting(0);
-session_start();
+if (session_status() === PHP_SESSION_NONE) {
+  session_start();
+}
 ?>
+
+<!DOCTYPE html>
+<html lang="en">
+
 
 <head>
   <!-- Required meta tags -->
@@ -78,7 +81,6 @@ session_start();
                 echo'  <li class="nav-item dropdown @@blog-active">
                           <a class="nav-link dropdown-toggle effect-3" href="login.php" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">';
                           //  echo $_SESSION["username"];
-                            echo $_SESSION["studentName"];
                             echo'<span class="fa fa-angle-down"></span>
                         </a>
                         <div class="dropdown-menu" aria-labelledby="navbarDropdown">

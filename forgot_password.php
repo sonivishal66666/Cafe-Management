@@ -324,7 +324,7 @@
                 $mail->Subject = "Password Reset Request";
                 $mail->Body = "Dear User,<br><br>
                     You have requested to reset your password. Click the link below:<br><br>
-                    <a href='http://localhost:3000/Canteen_Management/reset_password.php?email=$email&token=$reset_token'>Reset Password</a><br><br>
+                    <a href='https://canteen-app-23941260955.us-central1.run.app/reset_password.php?email=$email&token=$reset_token'>Reset Password</a><br><br>
                     This link is valid until you reset your password.<br><br>
                     Regards,<br>Team Mayuri";
     

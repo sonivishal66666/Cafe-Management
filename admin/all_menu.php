@@ -1,12 +1,14 @@
-<!DOCTYPE html>
-<html lang="en">
 <?php
 include("../connection/connect.php");
 error_reporting(0);
 session_start();
 ?>
-
 <?php include_once('header.php');?>
+
+<!DOCTYPE html>
+<html lang="en">
+
+
 <div class="row page-titles">
     <div class="col-md-5 align-self-center">
         <h3 class="text-primary"><i class="fa fa-table me-2"></i>All Menus</h3>

@@ -1,5 +1,3 @@
-<!DOCTYPE html>
-<html lang="en">
 <?php
 include("../connection/connect.php");
 error_reporting(0);
@@ -11,6 +9,10 @@ if(empty($_SESSION["adm_id"]))
 }
 ?>
 <?php include_once('header.php');?>
+
+<!DOCTYPE html>
+<html lang="en">
+
 
 <!-- Modern Dashboard CSS -->
 <style>

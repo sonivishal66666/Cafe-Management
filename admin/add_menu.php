@@ -1,3 +1,77 @@
+<?php
+include("../connection/connect.php");
+error_reporting(0); // Hides all PHP errors
+ini_set('display_errors', 0);
+session_start();
+
+$error = "";
+$success = "";
+
+if (isset($_POST['submit'])) {  
+    if (empty($_POST['d_name']) || empty($_POST['about']) || empty($_POST['price']) || empty($_POST['dish_name'])) {
+        $error = '<div class="alert alert-danger alert-dismissible fade show">
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                    <strong><i class="fas fa-exclamation-circle me-2"></i>All fields must be filled!</strong>
+                  </div>';
+    } else {
+        $fname = $_FILES['file']['name'];
+        $temp = $_FILES['file']['tmp_name'];
+        $fsize = $_FILES['file']['size'];
+        $extension = strtolower(pathinfo($fname, PATHINFO_EXTENSION));
+        $fnew = uniqid() . '.' . $extension; 
+        $store = "Category_Image/dishes/" . basename($fnew);
+
+        if ($extension == 'jpg' || $extension == 'png' || $extension == 'gif') {
+            if ($fsize >= 1000000) {
+                $error = '<div class="alert alert-danger alert-dismissible fade show">
+                            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                            <strong><i class="fas fa-exclamation-circle me-2"></i>Max Image Size is 1024kb!</strong> Try a smaller image.
+                          </div>';
+            } else {
+                if (isset($db)) {
+                    $rs_id = isset($_POST['rs_id']) ? $_POST['rs_id'] : 1;
+                    $in_today_menu = isset($_POST['in_today_menu']) ? $_POST['in_today_menu'] : 0;
+
+                    $stmt = $db->prepare("INSERT INTO dishes (title, slogan, price, img, status, c_id, rs_id, in_today_menu) 
+                                          VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
+                    $stmt->bind_param("ssdsiiii", $_POST['d_name'], $_POST['about'], $_POST['price'], $fnew, $_POST['status'], $_POST['dish_name'], $rs_id, $in_today_menu);
+
+                    if ($stmt->execute()) {
+                        if (@move_uploaded_file($temp, $store)) {
+                            $success = '<div class="alert alert-success alert-dismissible fade show">
+                                            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                                            <strong><i class="fas fa-check-circle me-2"></i>Success!</strong> New Dish Added Successfully.
+                                        </div>';
+                        } else {
+                            $error = '<div class="alert alert-warning alert-dismissible fade show">
+                                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                                        <strong><i class="fas fa-exclamation-triangle me-2"></i>File upload failed, but data was saved.</strong>
+                                      </div>';
+                        }
+                    } else {
+                        $error = '<div class="alert alert-danger alert-dismissible fade show">
+                                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                                    <strong><i class="fas fa-exclamation-circle me-2"></i>Error!</strong> Could not insert into database.
+                                  </div>';
+                    }
+                }
+            }
+        } elseif (empty($fname)) {
+            $error = '<div class="alert alert-danger alert-dismissible fade show">
+                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                        <strong><i class="fas fa-exclamation-circle me-2"></i>Please select an image.</strong>
+                      </div>';
+        } else {
+            $error = '<div class="alert alert-danger alert-dismissible fade show">
+                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                        <strong><i class="fas fa-exclamation-circle me-2"></i>Invalid extension!</strong> Only jpg, png, and gif are allowed.
+                      </div>';
+        }
+    }
+}
+?>
+<?php include_once('header.php'); ?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -177,79 +251,7 @@
 </head>
 
 <body>
-<?php
-include("../connection/connect.php");
-error_reporting(0); // Hides all PHP errors
-ini_set('display_errors', 0);
-session_start();
 
-$error = "";
-$success = "";
-
-if (isset($_POST['submit'])) {  
-    if (empty($_POST['d_name']) || empty($_POST['about']) || empty($_POST['price']) || empty($_POST['dish_name'])) {
-        $error = '<div class="alert alert-danger alert-dismissible fade show">
-                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-                    <strong><i class="fas fa-exclamation-circle me-2"></i>All fields must be filled!</strong>
-                  </div>';
-    } else {
-        $fname = $_FILES['file']['name'];
-        $temp = $_FILES['file']['tmp_name'];
-        $fsize = $_FILES['file']['size'];
-        $extension = strtolower(pathinfo($fname, PATHINFO_EXTENSION));
-        $fnew = uniqid() . '.' . $extension; 
-        $store = "Category_Image/dishes/" . basename($fnew);
-
-        if ($extension == 'jpg' || $extension == 'png' || $extension == 'gif') {
-            if ($fsize >= 1000000) {
-                $error = '<div class="alert alert-danger alert-dismissible fade show">
-                            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-                            <strong><i class="fas fa-exclamation-circle me-2"></i>Max Image Size is 1024kb!</strong> Try a smaller image.
-                          </div>';
-            } else {
-                if (isset($db)) {
-                    $rs_id = isset($_POST['rs_id']) ? $_POST['rs_id'] : 1;
-                    $in_today_menu = isset($_POST['in_today_menu']) ? $_POST['in_today_menu'] : 0;
-
-                    $stmt = $db->prepare("INSERT INTO dishes (title, slogan, price, img, status, c_id, rs_id, in_today_menu) 
-                                          VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
-                    $stmt->bind_param("ssdsiiii", $_POST['d_name'], $_POST['about'], $_POST['price'], $fnew, $_POST['status'], $_POST['dish_name'], $rs_id, $in_today_menu);
-
-                    if ($stmt->execute()) {
-                        if (@move_uploaded_file($temp, $store)) {
-                            $success = '<div class="alert alert-success alert-dismissible fade show">
-                                            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-                                            <strong><i class="fas fa-check-circle me-2"></i>Success!</strong> New Dish Added Successfully.
-                                        </div>';
-                        } else {
-                            $error = '<div class="alert alert-warning alert-dismissible fade show">
-                                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-                                        <strong><i class="fas fa-exclamation-triangle me-2"></i>File upload failed, but data was saved.</strong>
-                                      </div>';
-                        }
-                    } else {
-                        $error = '<div class="alert alert-danger alert-dismissible fade show">
-                                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-                                    <strong><i class="fas fa-exclamation-circle me-2"></i>Error!</strong> Could not insert into database.
-                                  </div>';
-                    }
-                }
-            }
-        } elseif (empty($fname)) {
-            $error = '<div class="alert alert-danger alert-dismissible fade show">
-                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-                        <strong><i class="fas fa-exclamation-circle me-2"></i>Please select an image.</strong>
-                      </div>';
-        } else {
-            $error = '<div class="alert alert-danger alert-dismissible fade show">
-                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-                        <strong><i class="fas fa-exclamation-circle me-2"></i>Invalid extension!</strong> Only jpg, png, and gif are allowed.
-                      </div>';
-        }
-    }
-}
-?>
-<?php include_once('header.php'); ?>
 
 <div class="container-fluid py-4">
     <!-- Page Header -->

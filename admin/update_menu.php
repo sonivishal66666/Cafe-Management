@@ -1,5 +1,3 @@
-<!DOCTYPE html>
-<html lang="en">
 <?php
 include("../connection/connect.php");
 error_reporting(0);
@@ -58,6 +56,10 @@ if(isset($_POST['submit']))           //if upload btn is press
     }
 }
 ?>
+
+<!DOCTYPE html>
+<html lang="en">
+
 <head>
     <!-- Add required meta tags -->
     <meta charset="utf-8">
