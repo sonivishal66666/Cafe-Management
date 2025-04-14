@@ -227,7 +227,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit'])) {
                     
                     if ($payment_method == 'COD') {
                         $order_id = mysqli_insert_id($db);
-                        
+                        $delete_sql = "DELETE FROM payments WHERE order_id = ?";
+                        $delete_stmt = mysqli_prepare($db, $delete_sql);
+                       mysqli_stmt_bind_param($delete_stmt, "i", $order_id);
+                        mysqli_stmt_execute($delete_stmt);
                         // Insert payment info for COD
                         $payment_SQL = "INSERT INTO payments (order_id, user_id, payment_amount, payment_status, payment_method) 
                                 VALUES (?, ?, ?, 'COD', 'COD')";
@@ -259,6 +262,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit'])) {
                 } elseif ($payment_method == 'UPI') {
                     // For UPI, get the last inserted order ID
                     $order_id = mysqli_insert_id($db);
+                    $delete_sql = "DELETE FROM payments WHERE order_id = ?";
+                    $delete_stmt = mysqli_prepare($db, $delete_sql);
+                   mysqli_stmt_bind_param($delete_stmt, "i", $order_id);
+                   mysqli_stmt_execute($delete_stmt);
                     
                     // Insert into payments table with PENDING status
                     $payment_SQL = "INSERT INTO payments (order_id, user_id, payment_amount, payment_status, payment_method) 
